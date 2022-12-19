@@ -13,11 +13,20 @@
 
 #include "ProgramInterface.h"
 
+/**
+ * @brief: This method manage the erros, that the program could has
+ * @param error : The message with the error that is going to be printed
+ */
 void ProgramInterface::error_manager(const std::string& error) const {
-  std::cout << error << std::endl;
+  std::cerr << error << std::endl;
   exit(EXIT_FAILURE);
 }
 
+/**
+ * @brief: This method is the second method to implement, the 
+ *         one who is called using -o parameter
+ * @return The list of coin_type and the quantity of the type
+ */
 std::list<std::pair<int, int>> ProgramInterface::devolver_cambio2() const {
   int sum{0};
   std::vector<moneda> vector_de_monedas = {200, 100, 50, 20, 10, 5, 2, 1};
@@ -36,6 +45,11 @@ std::list<std::pair<int, int>> ProgramInterface::devolver_cambio2() const {
   return result;
 }
 
+/**
+ * @brief: This method is the first method to implement, the 
+ *         one who is called without using -o parameter
+ * @return The list of coin_type
+ */
 std::list<int> ProgramInterface::devolver_cambio() const {
   int sum{0};
   int exchange = to_exchange_ * 100;
@@ -59,7 +73,11 @@ std::list<int> ProgramInterface::devolver_cambio() const {
   return result;
 }
 
-
+/**
+ * @brief: The constructor of the class.
+ * @param argc: number of parameters
+ * @param argv: The vector with parameters
+ */
 ProgramInterface::ProgramInterface(int argc, char* argv[]) {
   std::stringstream input_stream;
   to_exchange_ = 0;
@@ -98,7 +116,13 @@ ProgramInterface::ProgramInterface(int argc, char* argv[]) {
   }
 }
 
-
+/**
+ * @brief: Operator << overcharge.
+ * @param os: Output stream
+ * @param program: The object program that is going to be printed, depend
+ *                 on the option_o_ value.
+ * @return The modified output stream.
+ */
 std::ostream& operator<<(std::ostream& os, const ProgramInterface& program) {
   if (program.option_o_) {
     for (const auto& moneda : program.devolver_cambio2()) {
