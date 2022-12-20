@@ -124,6 +124,7 @@ ProgramInterface::ProgramInterface(int argc, char* argv[]) {
  * @return The modified output stream.
  */
 std::ostream& operator<<(std::ostream& os, const ProgramInterface& program) {
+  int total{0};
   std::vector<moneda> vector_de_monedas = {200, 100, 50, 20, 10, 5, 2, 1};
   if (program.option_b_) {
     vector_de_monedas = {50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5, 2, 1};
@@ -138,16 +139,31 @@ std::ostream& operator<<(std::ostream& os, const ProgramInterface& program) {
         break;
       }
     }
-  }
-  /*
+  }  
   for (const auto& type_of_coin : vector_de_monedas) {
     int counter{0};
     for (const auto& coin : vector_resultado) {
       if (coin == type_of_coin) {++counter;}
     }
-    std::cout << ((counter > 1) ? counter +  " x " : "" ) << (type_of_coin / 100 > 0 ? type_of_coin / 100 + "€ ": type_of_coin + "c ");
+    if (counter > 0) {
+      total += counter;
+      if (counter > 1) {
+        std::cout << counter <<  " x ";
+      }
+      if (type_of_coin / 100 > 0) {
+        std::cout << (type_of_coin / 100) << "€ ";
+      } else {
+        std::cout << type_of_coin << "c ";
+      }
+    }
+  
   }
   std::cout << std::endl; 
-  */
+  std::cout << "Total coins";
+  if (program.option_b_) {
+    std::cout << " and billets: " << total << std::endl; 
+  } else {
+    std::cout << ": " << total << std::endl;
+  }
   return os;
 }
