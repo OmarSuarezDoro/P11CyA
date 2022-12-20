@@ -24,7 +24,7 @@ class ProgramInterface {
  public:
   ProgramInterface(int argc, char* argv[]);
   std::list<int> devolver_cambio() const;
-  std::list<std::pair<int, int>> devolver_cambio2() const;
+  std::list<int> devolver_cambio2() const;
   void error_manager(const std::string& error) const;
   friend std::ostream& operator<<(std::ostream& os, const ProgramInterface& program);
  private:

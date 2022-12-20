@@ -27,18 +27,18 @@ void ProgramInterface::error_manager(const std::string& error) const {
  *         one who is called using -o parameter
  * @return The list of coin_type and the quantity of the type
  */
-std::list<std::pair<int, int>> ProgramInterface::devolver_cambio2() const {
+std::list<int> ProgramInterface::devolver_cambio2() const {
   int sum{0};
   std::vector<moneda> vector_de_monedas = {200, 100, 50, 20, 10, 5, 2, 1};
   if (option_b_) {
     vector_de_monedas = {50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5, 2, 1};
   }
   int cantidad_de_monedas{0};
-  std::list<std::pair<int,int>> result;  
+  std::list<int> result;  
   for (const auto& moneda : vector_de_monedas) {
     cantidad_de_monedas = ((to_exchange_ * 100) - sum) / moneda;
-    if (cantidad_de_monedas > 0) {
-      result.push_back({moneda, cantidad_de_monedas});
+    if (cantidad_de_monedas > 0) {  
+      result.push_back(moneda * cantidad_de_monedas);
       sum += cantidad_de_monedas * moneda;
     } 
   }    
@@ -124,32 +124,30 @@ ProgramInterface::ProgramInterface(int argc, char* argv[]) {
  * @return The modified output stream.
  */
 std::ostream& operator<<(std::ostream& os, const ProgramInterface& program) {
-  if (program.option_o_) {
-    for (const auto& moneda : program.devolver_cambio2()) {
-      std::cout << ((moneda.first / 100) > 0 ? moneda.first / 100 : moneda.first) << ((moneda.first / 100) > 0 ? "€" : "c") ;
-      if (moneda.second != 1) {
-        std::cout << "x" << moneda.second;
-      }
-      std::cout << " ";
-    }
-  } else {
-    std::list<int> aux_list = program.devolver_cambio();
-    std::list<int> aux_list_uniq = aux_list;
-    aux_list_uniq.unique();
-    std::vector<int> aux_vector(aux_list.size());
-    for (const auto& tipo_de_moneda : aux_list_uniq) {
-      int contador = 0;
-      for (const auto& moneda : aux_list) {
-        if (tipo_de_moneda == moneda) {
-          ++contador; 
+  std::vector<moneda> vector_de_monedas = {200, 100, 50, 20, 10, 5, 2, 1};
+  if (program.option_b_) {
+    vector_de_monedas = {50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5, 2, 1};
+  }
+  std::vector<moneda> vector_resultado;
+  for (const auto& quantity_coin : program.devolver_cambio2()) {
+    for (const auto& tipo_de_moneda : vector_de_monedas) {
+      if (quantity_coin % tipo_de_moneda == 0) {
+        for (int j = 0; j < (quantity_coin / tipo_de_moneda); ++j) {
+          vector_resultado.push_back(tipo_de_moneda);
         }
-      } 
-      std::cout << ((tipo_de_moneda / 100) > 0 ? tipo_de_moneda / 100 : tipo_de_moneda)  << ((tipo_de_moneda / 100) > 0 ? "€" : "c");
-      if (contador != 1) {
-        std::cout << "x" << contador;
+        break;
       }
-      std::cout << " ";
     }
   }
+  /*
+  for (const auto& type_of_coin : vector_de_monedas) {
+    int counter{0};
+    for (const auto& coin : vector_resultado) {
+      if (coin == type_of_coin) {++counter;}
+    }
+    std::cout << ((counter > 1) ? counter +  " x " : "" ) << (type_of_coin / 100 > 0 ? type_of_coin / 100 + "€ ": type_of_coin + "c ");
+  }
+  std::cout << std::endl; 
+  */
   return os;
 }
