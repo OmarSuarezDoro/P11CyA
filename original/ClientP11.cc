@@ -14,9 +14,9 @@
 #include "ProgramInterface.h"
 
 int main(int argc, char* argv[]) {
-  ProgramInterface programa{argc, argv};
-  std::cout << "Solución:" << std::endl;
-  std::cout << programa << std::endl;
-  std::cout << " [i] Terminando programa.." << std::endl;
+  ProgramInterface program{argc, argv};
+  std::cout << "Solution:" << std::endl;
+  std::cout << program << std::endl;
+  std::cout << " [i] EXIT PROGRAM.." << std::endl;
   return 0;
 }

@@ -27,19 +27,19 @@ void ProgramInterface::error_manager(const std::string& error) const {
  *         one who is called using -o parameter
  * @return The list of coin_type and the quantity of the type
  */
-std::list<int> ProgramInterface::devolver_cambio2() const {
+std::list<int> ProgramInterface::Change2() const {
   int sum{0};
-  std::vector<moneda> vector_de_monedas = {200, 100, 50, 20, 10, 5, 2, 1};
+  std::vector<coin> coins_vector = {200, 100, 50, 20, 10, 5, 2, 1};
   if (option_b_) {
-    vector_de_monedas = {50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5, 2, 1};
+    coins_vector = {50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5, 2, 1};
   }
   int cantidad_de_monedas{0};
   std::list<int> result;  
-  for (const auto& moneda : vector_de_monedas) {
-    cantidad_de_monedas = ((to_exchange_ * 100) - sum) / moneda;
+  for (const auto& coin : coins_vector) {
+    cantidad_de_monedas = ((to_exchange_ * 100) - sum) / coin;
     if (cantidad_de_monedas > 0) {  
-      result.push_back(moneda * cantidad_de_monedas);
-      sum += cantidad_de_monedas * moneda;
+      result.push_back(coin * cantidad_de_monedas);
+      sum += cantidad_de_monedas * coin;
     } 
   }    
   return result;
@@ -50,19 +50,19 @@ std::list<int> ProgramInterface::devolver_cambio2() const {
  *         one who is called without using -o parameter
  * @return The list of coin_type
  */
-std::list<int> ProgramInterface::devolver_cambio() const {
+std::list<int> ProgramInterface::Change() const {
   int sum{0};
   int exchange = to_exchange_ * 100;
   std::list<int> result;  
-  std::vector<moneda> vector_de_monedas = {200, 100, 50, 20, 10, 5, 2, 1};
+  std::vector<coin> coins_vector = {200, 100, 50, 20, 10, 5, 2, 1};
   if (option_b_) {
-    vector_de_monedas = {50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5, 2, 1};
+    coins_vector = {50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5, 2, 1};
   }
   while (sum != exchange) {
     int v{0};
-    for (const auto& moneda : vector_de_monedas) {
-      if (moneda + sum <= exchange) {
-        v = moneda;
+    for (const auto& coin : coins_vector) {
+      if (coin + sum <= exchange) {
+        v = coin;
         break;
       }
     }
@@ -125,13 +125,13 @@ ProgramInterface::ProgramInterface(int argc, char* argv[]) {
  */
 std::ostream& operator<<(std::ostream& os, const ProgramInterface& program) {
   int total{0};
-  std::vector<moneda> vector_de_monedas = {200, 100, 50, 20, 10, 5, 2, 1};
+  std::vector<coin> coins_vector = {200, 100, 50, 20, 10, 5, 2, 1};
   if (program.option_b_) {
-    vector_de_monedas = {50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5, 2, 1};
+    coins_vector = {50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5, 2, 1};
   }
-  std::vector<moneda> vector_resultado;
-  for (const auto& quantity_coin : program.devolver_cambio2()) {
-    for (const auto& tipo_de_moneda : vector_de_monedas) {
+  std::vector<coin> vector_resultado;
+  for (const auto& quantity_coin : program.Change2()) {
+    for (const auto& tipo_de_moneda : coins_vector) {
       if (quantity_coin % tipo_de_moneda == 0) {
         for (int j = 0; j < (quantity_coin / tipo_de_moneda); ++j) {
           vector_resultado.push_back(tipo_de_moneda);
@@ -140,7 +140,7 @@ std::ostream& operator<<(std::ostream& os, const ProgramInterface& program) {
       }
     }
   }  
-  for (const auto& type_of_coin : vector_de_monedas) {
+  for (const auto& type_of_coin : coins_vector) {
     int counter{0};
     for (const auto& coin : vector_resultado) {
       if (coin == type_of_coin) {++counter;}

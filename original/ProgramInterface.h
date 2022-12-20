@@ -18,13 +18,13 @@
 
 #pragma once
 
-typedef int moneda;
+typedef int coin;
 
 class ProgramInterface {
  public:
   ProgramInterface(int argc, char* argv[]);
-  std::list<int> devolver_cambio() const;
-  std::list<int> devolver_cambio2() const;
+  std::list<int> Change() const;
+  std::list<int> Change2() const;
   void error_manager(const std::string& error) const;
   friend std::ostream& operator<<(std::ostream& os, const ProgramInterface& program);
  private:
